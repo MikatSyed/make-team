@@ -1,23 +1,33 @@
-import logo from './logo.svg';
+import User from '../src/Component/User/User'
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+  const[users,setUsers] = useState([])
+  const [team,setTeam] = useState([])
+ 
+
+  useEffect(()=> {
+    fetch('https://randomuser.me/api/?results=15')
+    .then(res => res.json())
+    .then(data =>
+     setUsers(data.results))
+  },[])
+ const handleAddMember = name =>{
+  //  console.log("clicked",member);
+   const newCart = [...team,name]
+ 
+   setTeam(newCart)
+ }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+     <h3>Team Builder</h3>
+     {
+       team.map(td =><li>{td}</li>)
+     }
+    {
+      users.map(user => <User user={user} key={user.id.value} handleAddMember={handleAddMember}/>)
+    }
     </div>
   );
 }
